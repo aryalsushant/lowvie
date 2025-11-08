@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from 'react';
 
 interface Expense {
   category: string;
@@ -23,32 +24,83 @@ interface ModalProps {
 }
 
 function ContactModal({ isOpen, onClose, business }: ModalProps) {
-  const defaultSubject = `Request for Price Negotiation - ${business.category}`;
-  const defaultBody = `Dear ${business.business_name},\n\n` +
+  const [subject, setSubject] = React.useState(`Request for Price Negotiation - ${business.category}`);
+  const [body, setBody] = React.useState(
+    `Dear ${business.business_name},\n\n` +
     `We value our business relationship and would like to discuss our current pricing for ${business.category} services. Our market research shows competitive rates in the area averaging $${(business.price * 0.9).toFixed(2)}, with some suppliers offering rates as low as $${(business.price * 0.85).toFixed(2)}.\n\n` +
     `Would you be open to discussing a price adjustment to help us maintain a mutually beneficial partnership?\n\n` +
     `Best regards,\n` +
-    `[Your Company Name]`;
-
-  const [emailSubject, setEmailSubject] = useState(defaultSubject);
-  const [emailBody, setEmailBody] = useState(defaultBody);
+    `[Your Company Name]`
+  );
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" style={{ pointerEvents: 'auto' }}>
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-lg" style={{ pointerEvents: 'auto' }}>
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">Contact {business.business_name}</h3>
+    <div className="fixed inset-0 flex items-center justify-center z-50" style={{ background: 'rgba(0, 0, 0, 0.5)' }}>
+      <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Contact {business.business_name}</h2>
           <button 
-            onClick={onClose}
-            className="!text-gray-500 hover:!text-gray-700"
+            onClick={onClose} 
+            className="text-gray-500 hover:text-gray-700"
+            type="button"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
+
+                  <div className="space-y-6">
+            <div className="relative">
+              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Subject
+              </label>
+              <input
+                type="text"
+                id="subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                placeholder="Enter email subject"
+              />
+            </div>
+
+            <div className="relative">
+              <label htmlFor="body" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Content
+              </label>
+              <textarea
+                id="body"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                rows={10}
+                className="w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm bg-white"
+                placeholder="Enter your message"
+                style={{ resize: 'vertical' }}
+              />
+            </div>
+
+            <div className="flex space-x-4 pt-4">
+              <button
+                onClick={() => {
+                  window.location.href = `mailto:${business.contact}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                }}
+                className="flex-1 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                type="button"
+              >
+                Send Email
+              </button>
+              <button
+                onClick={onClose}
+                className="flex-1 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                type="button"
+              >
+                Cancel
+              </button>
+      </div>
+    </div>
+  );
         
         <div className="space-y-4">
           <div>
@@ -79,27 +131,31 @@ function ContactModal({ isOpen, onClose, business }: ModalProps) {
             </div>
           )}
 
-          <div className="space-y-4">
+          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
             <div>
-              <label className="block text-sm !text-gray-700 font-medium mb-1">Email Subject</label>
+              <label htmlFor="emailSubject" className="block text-sm text-gray-700 font-medium mb-1">
+                Email Subject
+              </label>
               <input
+                id="emailSubject"
                 type="text"
                 value={emailSubject}
-                onChange={(e) => setEmailSubject(e.target.value)}
-                className="w-full p-3 rounded border border-gray-300 !text-gray-900 bg-white hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all pointer-events-auto"
+                onChange={handleSubjectChange}
+                className="w-full p-3 rounded border border-gray-300 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Enter email subject"
-                style={{ pointerEvents: 'auto' }}
               />
             </div>
             <div>
-              <label className="block text-sm !text-gray-700 font-medium mb-1">Email Content</label>
+              <label htmlFor="emailBody" className="block text-sm text-gray-700 font-medium mb-1">
+                Email Content
+              </label>
               <textarea
+                id="emailBody"
                 value={emailBody}
-                onChange={(e) => setEmailBody(e.target.value)}
+                onChange={handleBodyChange}
                 rows={10}
-                className="w-full p-3 rounded border border-gray-300 !text-gray-900 bg-white hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-mono text-sm leading-relaxed whitespace-pre-wrap pointer-events-auto"
-                placeholder="Enter your message here..."
-                style={{ resize: 'vertical', pointerEvents: 'auto' }}
+                className="w-full p-3 rounded border border-gray-300 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                placeholder="Enter your message here"
               />
             </div>
           </div>
