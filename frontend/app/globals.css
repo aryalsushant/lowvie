@@ -221,23 +221,24 @@ body {
   inset: -2px;
   background: linear-gradient(115deg, 
     transparent 0%, 
-    #ff4d4d 10%,
-    #ff9933 20%,
-    #ffcc00 30%,
-    #8B5CF6 50%,
-    #10B981 70%,
+    #4c1d95 10%, /* darker purple */
+    #5b21b6 20%, /* dark purple */
+    #6d28d9 30%, /* medium purple */
+    #4c1d95 40%,
+    #065f46 60%, /* dark emerald */
+    #047857 70%, /* medium emerald */
     transparent 100%
   );
   background-size: 200% 200%;
   animation: fireGlow 4s ease infinite;
-  opacity: 0.5;
+  opacity: 0.4;
   z-index: -1;
   filter: blur(8px);
 }
 
 .glow-border::after {
   filter: blur(16px);
-  opacity: 0.3;
+  opacity: 0.2;
   animation-duration: 6s;
   animation-direction: reverse;
 }
