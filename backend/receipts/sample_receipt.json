@@ -1,0 +1,29 @@
+{
+    "expenses": [
+        {
+            "category": "material",
+            "business_name": "Premium Hoodies Co.",
+            "city": "San Francisco",
+            "price": 25.00,
+            "contact": "sales@premiumhoodies.com",
+            "details": "Bulk order of blank hoodies, 100% cotton"
+        },
+        {
+            "category": "printing",
+            "business_name": "FastPrint Solutions",
+            "city": "San Francisco",
+            "price": 8.50,
+            "contact": "orders@fastprint.com",
+            "details": "Screen printing service, full color"
+        },
+        {
+            "category": "shipping",
+            "business_name": "QuickShip Logistics",
+            "city": "San Francisco",
+            "price": 5.75,
+            "contact": "support@quickship.com",
+            "details": "Standard shipping within city limits"
+        }
+    ],
+    "total_amount": 39.25
+}
