@@ -23,13 +23,23 @@ interface ModalProps {
 }
 
 function ContactModal({ isOpen, onClose, business }: ModalProps) {
+  const defaultSubject = `Request for Price Negotiation - ${business.category}`;
+  const defaultBody = `Dear ${business.business_name},\n\n` +
+    `We value our business relationship and would like to discuss our current pricing for ${business.category} services. Our market research shows competitive rates in the area averaging $${(business.price * 0.9).toFixed(2)}, with some suppliers offering rates as low as $${(business.price * 0.85).toFixed(2)}.\n\n` +
+    `Would you be open to discussing a price adjustment to help us maintain a mutually beneficial partnership?\n\n` +
+    `Best regards,\n` +
+    `[Your Company Name]`;
+
+  const [emailSubject, setEmailSubject] = useState(defaultSubject);
+  const [emailBody, setEmailBody] = useState(defaultBody);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-lg [&_*]:text-black">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" style={{ pointerEvents: 'auto' }}>
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-lg" style={{ pointerEvents: 'auto' }}>
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-semibold !text-gray-900">Contact {business.business_name}</h3>
+          <h3 className="text-xl font-semibold text-gray-900">Contact {business.business_name}</h3>
           <button 
             onClick={onClose}
             className="!text-gray-500 hover:!text-gray-700"
@@ -69,13 +79,39 @@ function ContactModal({ isOpen, onClose, business }: ModalProps) {
             </div>
           )}
 
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm !text-gray-700 font-medium mb-1">Email Subject</label>
+              <input
+                type="text"
+                value={emailSubject}
+                onChange={(e) => setEmailSubject(e.target.value)}
+                className="w-full p-3 rounded border border-gray-300 !text-gray-900 bg-white hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all pointer-events-auto"
+                placeholder="Enter email subject"
+                style={{ pointerEvents: 'auto' }}
+              />
+            </div>
+            <div>
+              <label className="block text-sm !text-gray-700 font-medium mb-1">Email Content</label>
+              <textarea
+                value={emailBody}
+                onChange={(e) => setEmailBody(e.target.value)}
+                rows={10}
+                className="w-full p-3 rounded border border-gray-300 !text-gray-900 bg-white hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-mono text-sm leading-relaxed whitespace-pre-wrap pointer-events-auto"
+                placeholder="Enter your message here..."
+                style={{ resize: 'vertical', pointerEvents: 'auto' }}
+              />
+            </div>
+          </div>
           <div className="pt-6 flex space-x-3">
-            <a
-              href={`mailto:${business.contact}?subject=Business Inquiry - ${business.business_name}&body=Dear ${business.business_name},%0D%0A%0D%0AI am writing to inquire about your services in the ${business.category} category. I would like to discuss potential business opportunities.%0D%0A%0D%0ABest regards,%0D%0A[Your Name]`}
+            <button
+              onClick={() => {
+                window.location.href = `mailto:${business.contact}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+              }}
               className="flex-1 bg-blue-600 hover:bg-blue-700 !text-white py-2 px-4 rounded transition-colors text-center"
             >
               Send Email
-            </a>
+            </button>
             <button
               onClick={onClose}
               className="flex-1 border border-gray-300 hover:border-gray-400 !text-gray-700 hover:!text-gray-900 bg-white py-2 px-4 rounded transition-colors"
