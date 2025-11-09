@@ -1,118 +1,81 @@
 import asyncio
+import json
+from typing import Dict, Any
+
+from dedalus_labs import AsyncDedalus, DedalusRunner
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class SearchAgent:
+    """Find alternative suppliers using Dedalus (optionally via MCP search)."""
+
     def __init__(self):
-        self.hardcoded_alternatives = {
-            "material": [
-                {
-                    "business_name": "EcoHoodies Manufacturing",
-                    "city": "San Francisco",
-                    "estimated_price": 19.99,
-                    "contact_email": "sales@ecohoodies.com",
-                    "potential_savings": 5.01,
-                    "distance_from_original": "2 miles"
-                },
-                {
-                    "business_name": "Bay Area Apparel Co.",
-                    "city": "Oakland",
-                    "estimated_price": 21.50,
-                    "contact_email": "wholesale@bayapparel.com",
-                    "potential_savings": 3.50,
-                    "distance_from_original": "8 miles"
-                },
-                {
-                    "business_name": "Urban Fabric Solutions",
-                    "city": "San Jose",
-                    "estimated_price": 22.75,
-                    "contact_email": "info@urbanfabric.com",
-                    "potential_savings": 2.25,
-                    "distance_from_original": "15 miles"
-                }
-            ],
-            "printing": [
-                {
-                    "business_name": "Digital Print Masters",
-                    "city": "San Francisco",
-                    "estimated_price": 6.50,
-                    "contact_email": "orders@dprintmasters.com",
-                    "potential_savings": 2.00,
-                    "distance_from_original": "1 mile"
-                },
-                {
-                    "business_name": "ScreenPro Graphics",
-                    "city": "Berkeley",
-                    "estimated_price": 7.25,
-                    "contact_email": "sales@screenpro.com",
-                    "potential_savings": 1.25,
-                    "distance_from_original": "5 miles"
-                },
-                {
-                    "business_name": "InkWorks Pro",
-                    "city": "Palo Alto",
-                    "estimated_price": 7.75,
-                    "contact_email": "business@inkworkspro.com",
-                    "potential_savings": 0.75,
-                    "distance_from_original": "12 miles"
-                }
-            ],
-            "shipping": [
-                {
-                    "business_name": "SpeedShip Express",
-                    "city": "San Francisco",
-                    "estimated_price": 4.25,
-                    "contact_email": "quotes@speedship.com",
-                    "potential_savings": 1.50,
-                    "distance_from_original": "0.5 miles"
-                },
-                {
-                    "business_name": "Bay Logistics Co.",
-                    "city": "San Francisco",
-                    "estimated_price": 4.75,
-                    "contact_email": "dispatch@baylogistics.com",
-                    "potential_savings": 1.00,
-                    "distance_from_original": "3 miles"
-                },
-                {
-                    "business_name": "Swift Delivery Network",
-                    "city": "Daly City",
-                    "estimated_price": 5.00,
-                    "contact_email": "service@swiftdelivery.com",
-                    "potential_savings": 0.75,
-                    "distance_from_original": "7 miles"
-                }
-            ]
-        }
+        self.client = AsyncDedalus()
+        self.runner = DedalusRunner(self.client)
 
-    async def search_alternatives(self, category, city, current_price):
-        """Return hardcoded alternatives for demo purposes"""
-        # Simulate a delay for better UX
-        await asyncio.sleep(5)  # Show loading state for 5 seconds
-        
-        alternatives = self.hardcoded_alternatives.get(category.lower(), [])
-        
-        # Adjust prices based on the current price if needed
-        if alternatives and current_price > 0:
-            for alt in alternatives:
-                # Keep the same savings ratio but adjust based on current price
-                savings_ratio = alt["potential_savings"] / alt["estimated_price"]
-                alt["estimated_price"] = current_price - (current_price * savings_ratio)
-                alt["potential_savings"] = current_price - alt["estimated_price"]
-        
-        return {
-            "alternatives": alternatives
-        }
+    async def search_alternatives(self, category: str, city: str, current_price: float) -> Dict[str, Any]:
+        prompt = f'''
+You are a sourcing analyst. For the category "{category}" in city "{city}", find 3-5 alternative suppliers with indicative unit prices.
+Return ONLY JSON with this shape:
+{{
+  "alternatives": [
+    {{
+      "business_name": "string",
+      "city": "string",
+      "estimated_price": float,
+      "contact_email": "string",
+      "distance_from_original": "string"
+    }}
+  ]
+}}
 
-async def test_search_agent():
-    """Test function for the search agent"""
-    agent = SearchAgent()
-    # Test with sample data
-    result = await agent.search_alternatives(
-        category="material",
-        city="San Francisco",
-        current_price=25.00
-    )
-    print("Search Result:", result)
+Guidelines:
+- Prefer reputable sources (official vendor sites, B2B marketplaces).
+- Use realistic USD pricing.
+- If price < {current_price}, it's a savings; distance can be a rough estimate.
+'''
 
-if __name__ == "__main__":
-    # Run test function
-    asyncio.run(test_search_agent())
+        try:
+            result = await self.runner.run(
+                input=prompt,
+                model="openai/gpt-5",
+                mcp_servers=["windsor/brave-search-mcp"],
+                stream=False,
+            )
+            data = self._safe_json(result.final_output)
+        except Exception:
+            data = {"alternatives": []}
+
+        alts = []
+        for a in data.get("alternatives", [])[:5]:
+            try:
+                estimated = float(a.get("estimated_price", 0) or 0)
+                savings = max(0.0, float(current_price) - estimated)
+                alts.append({
+                    "business_name": a.get("business_name", "Supplier"),
+                    "city": a.get("city", city),
+                    "estimated_price": round(estimated, 2),
+                    "contact_email": a.get("contact_email", "sales@example.com"),
+                    "potential_savings": round(savings, 2),
+                    "distance_from_original": a.get("distance_from_original", "")
+                })
+            except Exception:
+                continue
+
+        return {"alternatives": alts}
+
+    def _safe_json(self, raw: str) -> Dict[str, Any]:
+        raw = (raw or "").strip()
+        try:
+            return json.loads(raw)
+        except Exception:
+            first = raw.find("{")
+            last = raw.rfind("}")
+            if first != -1 and last != -1:
+                try:
+                    return json.loads(raw[first:last + 1])
+                except Exception:
+                    return {"alternatives": []}
+        return {"alternatives": []}

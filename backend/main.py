@@ -25,125 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Hardcoded demo data
-DEMO_DATA = {
-    "expenses": [
-        {
-            "category": "material",
-            "business_name": "Premium Fabrics Inc.",
-            "city": "San Francisco",
-            "price": 25.00,
-            "contact": "orders@premiumfabrics.com",
-            "details": "High-quality cotton blend material"
-        },
-        {
-            "category": "printing",
-            "business_name": "FastPrint Solutions",
-            "city": "San Francisco",
-            "price": 8.50,
-            "contact": "sales@fastprint.com",
-            "details": "Screen printing services"
-        },
-        {
-            "category": "shipping",
-            "business_name": "QuickShip Logistics",
-            "city": "San Francisco",
-            "price": 5.75,
-            "contact": "support@quickship.com",
-            "details": "Standard 3-5 day shipping"
-        }
-    ],
-    "total_amount": 39.25,
-    "receipt_date": "2025-11-08",
-    "vendor_details": {
-        "name": "Wholesale Supply Co.",
-        "address": "123 Market St, San Francisco, CA 94105",
-        "phone": "(415) 555-0123",
-        "email": "info@wholesalesupply.com"
-    }
-}
-
-# Hardcoded alternatives data
-DEMO_ALTERNATIVES = {
-    "material": [
-        {
-            "business_name": "EcoHoodies Manufacturing",
-            "city": "San Francisco",
-            "estimated_price": 19.99,
-            "contact_email": "sales@ecohoodies.com",
-            "potential_savings": 5.01,
-            "distance_from_original": "2 miles"
-        },
-        {
-            "business_name": "Bay Area Apparel Co.",
-            "city": "Oakland",
-            "estimated_price": 21.50,
-            "contact_email": "wholesale@bayapparel.com",
-            "potential_savings": 3.50,
-            "distance_from_original": "8 miles"
-        },
-        {
-            "business_name": "Urban Fabric Solutions",
-            "city": "San Jose",
-            "estimated_price": 22.75,
-            "contact_email": "info@urbanfabric.com",
-            "potential_savings": 2.25,
-            "distance_from_original": "15 miles"
-        }
-    ],
-    "printing": [
-        {
-            "business_name": "Digital Print Masters",
-            "city": "San Francisco",
-            "estimated_price": 6.50,
-            "contact_email": "orders@dprintmasters.com",
-            "potential_savings": 2.00,
-            "distance_from_original": "1 mile"
-        },
-        {
-            "business_name": "ScreenPro Graphics",
-            "city": "Berkeley",
-            "estimated_price": 7.25,
-            "contact_email": "sales@screenpro.com",
-            "potential_savings": 1.25,
-            "distance_from_original": "5 miles"
-        },
-        {
-            "business_name": "InkWorks Pro",
-            "city": "Palo Alto",
-            "estimated_price": 7.75,
-            "contact_email": "business@inkworkspro.com",
-            "potential_savings": 0.75,
-            "distance_from_original": "12 miles"
-        }
-    ],
-    "shipping": [
-        {
-            "business_name": "SpeedShip Express",
-            "city": "San Francisco",
-            "estimated_price": 4.25,
-            "contact_email": "quotes@speedship.com",
-            "potential_savings": 1.50,
-            "distance_from_original": "0.5 miles"
-        },
-        {
-            "business_name": "Bay Logistics Co.",
-            "city": "San Francisco",
-            "estimated_price": 4.75,
-            "contact_email": "dispatch@baylogistics.com",
-            "potential_savings": 1.00,
-            "distance_from_original": "3 miles"
-        },
-        {
-            "business_name": "Swift Delivery Network",
-            "city": "Daly City",
-            "estimated_price": 5.00,
-            "contact_email": "service@swiftdelivery.com",
-            "potential_savings": 0.75,
-            "distance_from_original": "7 miles"
-        }
-    ]
-}
+from .parse_agent import ParseAgent
+from .search_agent import SearchAgent
+from .negotiation_agent import NegotiationAgent
 
 class EmailRequest(BaseModel):
     supplier_info: Dict[str, Any]
@@ -174,87 +58,49 @@ class TransactionsRequest(BaseModel):
 
 knot = KnotClient()
 
+parse_agent = ParseAgent()
+search_agent = SearchAgent()
+negotiation_agent = NegotiationAgent()
+
+
 @app.post("/upload-receipt")
 async def upload_receipt(file: UploadFile = File(...)):
-    """Handle receipt upload and return demo data"""
+    """Handle receipt upload and return parsed data using AI agents."""
     try:
-        # Simulate processing time
-        await asyncio.sleep(2)
-        
-        # Create receipts directory if it doesn't exist
-        os.makedirs(os.path.join(os.path.dirname(__file__), "receipts"), exist_ok=True)
-        
-        # Save the uploaded file (optional, for demo purposes)
-        file_path = os.path.join(os.path.dirname(__file__), "receipts", file.filename)
-        try:
-            content = await file.read()
-            with open(file_path, "wb") as buffer:
-                buffer.write(content)
-        except Exception:
-            pass  # Ignore file saving errors
-        
-        # Return demo data
-        return DEMO_DATA
-        
+        content = await file.read()
+        # Minimal agent call (parse agent currently returns empty list per user instruction)
+        parsed = await parse_agent.parse_pdf(content)
+        return parsed
     except Exception as e:
-        print(f"Error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to process receipt")
+        raise HTTPException(status_code=500, detail=f"Failed to process receipt: {e}")
 
 @app.get("/search-alternatives/{category}")
 async def search_alternatives(category: str, city: str, current_price: float):
-    """Return hardcoded alternatives for the given category"""
     try:
-        # Simulate processing time
-        await asyncio.sleep(5)
-        
-        # Return demo alternatives with adjusted prices
-        alternatives = DEMO_ALTERNATIVES.get(category.lower(), [])
-        for alt in alternatives:
-            # Keep the same savings ratio but adjust based on current price
-            savings_ratio = alt["potential_savings"] / alt["estimated_price"]
-            alt["estimated_price"] = current_price - (current_price * savings_ratio)
-            alt["potential_savings"] = current_price - alt["estimated_price"]
-        
-        return {"alternatives": alternatives}
+        results = await search_agent.search_alternatives(category=category, city=city, current_price=current_price)
+        return results
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch alternatives: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch alternatives: {e}")
 
 @app.post("/draft-email")
 async def draft_email(request: EmailRequest):
-    """Generate a demo email draft"""
     try:
-        # Simulate processing time
-        await asyncio.sleep(1.5)
-        
-        # Generate email based on request type
         if request.is_current_supplier:
-            subject = f"Request for Price Negotiation - {request.category}"
-            body = f"""Dear {request.supplier_info['business_name']},
-
-We value our business relationship and would like to discuss our current pricing for {request.category} services. Our market research shows competitive rates in the area averaging ${request.market_data['average_market_price']:.2f}, with some suppliers offering rates as low as ${request.market_data['lowest_competitor_price']:.2f}.
-
-Would you be open to discussing a price adjustment to help us maintain a mutually beneficial partnership?
-
-Best regards,
-[Your Company Name]"""
+            email = await negotiation_agent.draft_negotiation_email(
+                current_supplier=request.supplier_info,
+                category=request.category,
+                current_price=request.current_price,
+                market_data=request.market_data or {}
+            )
         else:
-            subject = f"Business Opportunity - {request.category} Services"
-            body = f"""Dear {request.supplier_info['business_name']},
-
-We are currently looking for competitive {request.category.lower()} services in your area. Your estimated rate of ${request.current_price:.2f} caught our attention.
-
-Would you be available to discuss your services and pricing in more detail?
-
-Best regards,
-[Your Company Name]"""
-            
-        return {
-            "to_email": request.supplier_info["contact_email"],
-            "subject": subject,
-            "body": body
-        }
+            email = await negotiation_agent.draft_new_supplier_email(
+                supplier_info=request.supplier_info,
+                category=request.category,
+                current_price=request.current_price,
+            )
+        return email
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to generate email: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate email: {e}")
 
 if __name__ == "__main__":
     import uvicorn

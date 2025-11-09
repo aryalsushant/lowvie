@@ -7,4 +7,8 @@ python-multipart==0.0.6
 requests==2.32.3
 python-dotenv==1.0.1
 
+# AI agents
+dedalus-labs
+pdfplumber==0.10.3
+
 
