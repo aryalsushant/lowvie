@@ -25,6 +25,8 @@ export default function Home() {
   const handleFileUpload = async (file: File) => {
     try {
       setIsLoading(true);
+      // Ensure the loading screen stays visible for at least 10 seconds
+      const minDelay = new Promise((resolve) => setTimeout(resolve, 10000));
       const formData = new FormData();
       formData.append('file', file);
 
@@ -38,6 +40,8 @@ export default function Home() {
       }
 
       const data = await response.json();
+      // Wait for the minimum delay before showing results
+      await minDelay;
       setParsedData(data);
     } catch (error) {
       console.error('Error:', error);
@@ -97,7 +101,7 @@ export default function Home() {
                   <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
                 <p className="text-lg loading-dots">
-                  Analyzing your receipt
+                  Analyzing your transactions
                 </p>
               </div>
             </div>
