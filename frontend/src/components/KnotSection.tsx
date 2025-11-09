@@ -63,7 +63,7 @@ export default function KnotSection({ onTriggerUpload }: Props) {
       clientId: 'dda0778d-9486-47f8-bd80-6f2512f9bcdb',
       environment: 'development',
       product: 'transaction_link',
-      merchantIds: [19, 44, 36],
+      merchantIds: [19, 44, 36, 12, 165, 45],
       entryPoint: 'demo',
       useCategories: false,
       useSearch: false,

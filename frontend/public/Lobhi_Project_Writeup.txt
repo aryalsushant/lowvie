@@ -1,0 +1,24 @@
+## Inspiration
+As a business owner, you buy multiple products or services from other businesses to keep your business running — from raw materials to shipping partners to payment processors. Most business owners don’t realize they might be getting overcharged. They either don’t have the time to research and negotiate with multiple vendors or don’t have enough insight into what the market’s normal prices are. Because of this, most end up overspending, which cuts into their profit margins.
+
+## What it does
+Lobhi automatically parses all your invoices and connects with your merchant accounts (Amazon, Walmart, PayPal, etc.). It knows exactly how much you spend and on what, then researches the best deals for your business. If you decide you deserve a better deal, Lobhi can even negotiate with your vendor on your behalf (with your approval and input, of course). It can also reach out to new vendors to make sure you’re always getting the best possible price.  
+In Nepali, *Lobhi* literally means “frugal.” Lobhi is your friend that dedicates itself to analyzing, researching, and negotiating the best deals — so you can spend your time doing what you love.
+
+## How I built it
+We used the Knot SDK to let users connect their vendor accounts (Amazon, Walmart, PayPal, etc.) and automatically retrieve all transactions in a format that’s easy for both AI agents to process and business owners to understand.  
+
+I used Dedalus by Dedalus Labs to create three AI agents: one that parses and organizes invoice data, one that searches the web for market rates and better deals, and a third that negotiates with vendors or reaches out to new ones for better pricing.
+
+## Challenges I ran into
+Integrating multiple AI agents to handle complex and sensitive data was a major challenge. Dedalus made this process much simpler. Another big challenge was using the Knot SDK to link vendor accounts and retrieve transaction data — but both tools turned out to be surprisingly easy to adopt, even for a first-time user like me. One lesson I had to learn early was not to overcomplicate things — something we tech enthusiasts often fall into.
+
+## Accomplishments that I'm proud of
+Despite the challenges, I built a working prototype that I’m genuinely proud of. Lobhi saves time and money for business owners, especially small and medium-sized ones who might not have the resources to constantly track market prices and negotiate with multiple suppliers.  
+Lobhi gives every business — regardless of size — access to the same level of financial organization, market insight, and negotiation power that large corporations have. It helps level the playing field, and that’s something I’m very proud of.
+
+## What I learned
+Throughout this project, I became familiar with powerful tools like Knot and Dedalus that are reshaping how developers build AI systems. The tech space moves fast, and it’s hard to stay updated amidst all the noise. I also learned that when you’re genuinely focused on building something meaningful, people are always willing to help. I’m grateful to all the mentors and judges who offered guidance when I hit roadblocks and felt overwhelmed — especially under such tight time constraints.
+
+## What's next for Lobhi
+Since Lobhi relies on collaboration between three AI agents, the process can sometimes be slow, taking a few minutes to complete the full workflow. While that’s still much faster than manually managing expenses, analyzing data, and negotiating deals, there’s always room for improvement. Making Lobhi faster and more efficient is the next big step — and setting those high expectations is what drives innovation forward.
