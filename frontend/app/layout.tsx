@@ -7,6 +7,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Lowvie - Reducing the Gap Between Revenue & Profit',
   description: 'Optimize your business expenses with AI-powered analysis and negotiation',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png'
+  }
 }
 
 export default function RootLayout({
