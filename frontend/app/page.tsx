@@ -65,7 +65,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Lobhi - Nepali Word For 'Frugal' - Helps You Increase your Profit Margin with Just A Few Clicks.
+            Lobhi tracks your purchases, researches the market, and automatically negotiates or finds better vendors to make sure you're getting the best deal.
           </p>
         </div>
 

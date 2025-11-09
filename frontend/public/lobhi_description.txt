@@ -1,0 +1,23 @@
+## Inspiration
+As a business owner, you buy multiple products or services from other businesses to keep your business running. It could be raw materials, shipping partners, payment processors, etc. Most business owners do not know they they might be being overcharged. They simply cannot have the knowledge of market's normal price for the product, do not have time to research and negotiate with multiple vendors to get the best deals. Because of this hassle, most business owners overspend and it reduces their profit margin.
+
+## What it does
+Lobhi automatically parses all your invoices and even connects with your merchant accounts (Amazon, Walmart, PayPal, etc.) It know how much you spend on what, and it can research the best deals most suitable for your businesses and suggest them to you. If you feel that you deserve to get a better deal, Lobhi will automatically negotiate with your vendor on your behalf (with your approval and suggestions, of course). It will even reach out to potential new vendors, making sure you are getting the best deal at whatever you are buying and giving you the best profit margins. In Nepali, Lobhi (lobhi) literally means "frugal". Lobhi is your friend that dedicates itself to analyzing, researching, finding, and negotiating the best deals so that you can spend your time doing what you love.
+
+## How I built it
+We used Knot SDK to allow users to connect their vendor accounts (Amazon, Walmart, Paypal, etc) and automatically retrieve all transactions from it in a format that an AI agent can easily work with, and a business owner can easily understand. 
+
+I used Dedalus by Dedalus Labs to create three AI agents: One that parses information from receipts and organizes it, one that searches the web to research market rates and find better deals, and a third agent that can negotiate with your current vendor for a better price and/or reach out to a new vendor.
+
+## Challenges I ran into
+Integrating multiple AI agents to handle and work with sensitive and complex data was a difficult task. Dedalus simplified this a lot. A big challenge was integrating Knot SDK to allow users to link their vendor accounts and retrieve+process those transactions. However, both tools were very simple to adopt, even for me who was a first time user of both tools. One challenge was not over complicating the use of simple tools, which us tech enthusiasts regularly fall for. 
+
+## Accomplishments that I'm proud of
+Despite these challenges, I managed to build a working prototype. I'm incredibly proud to be able to create a tool that saves hours of time and tons of money for business owners, specially small to medium sized business owners, who might not have the time or the resources needed to constantly stay up-to-date with what the market offers and put in the work to get the most ideal deal for all of their needs so that they are not unnecessarily wasting money that could be used to grow the business.
+Lobhi allows businesses of any size to have the same financial organization, research, and negotiation capability that a big corporation has, which levels the play field and allows these businesses to compete fairly. I'm proud of that.
+
+## What I learned
+Throughout this project, I gained familiarity with new tools that disrupt the industry: particularly Knot and Dedalus. The tech space is constantly changing and it is hard to keep up with the best that the industry has to offer amidst all the noise. I also discovered that if you're dedicated to building something, people are eager to offer help. I'm grateful to all the mentors and judges who spent their valuable time helping me when I was panicking about setbacks and challenges, especially under such a small time constraint.
+
+## What's next for Lobhi
+Since Lobhi depends on the collaboration of three different AI agents, it can often be slow, taking multiple minutes to complete the workflow from beginning to end. While it is true that a few minutes is nothing compared to the time and effort it takes to organize your expenses, analyze them, study the market, research alternatives, and negotiate better deals; it will always be beneficial to find a way to make this process faster. Setting high expectations is what breeds innovation.
