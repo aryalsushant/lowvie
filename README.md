@@ -166,7 +166,7 @@ MIT
 
 ---
 
-## Thanks you
+## Thanks to
 - Knot API — TransactionLink and SDK
 - Dedalus Labs — Agent orchestration
 - Capital One — Best Financial Hack track which inspired this project
