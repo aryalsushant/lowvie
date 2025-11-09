@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import UploadForm from '@/components/UploadForm';
 import ExpenseAnalysis from '@/components/ExpenseAnalysis';
+import KnotSection from '@/components/KnotSection';
 
 interface ParsedData {
   expenses: Array<{
@@ -128,6 +129,11 @@ export default function Home() {
               <p className="text-text-secondary">Get actionable insights and detailed spending analytics</p>
             </div>
           </div>
+        )}
+
+        {/* Knot Section Below Project Cards */}
+        {!parsedData && !isLoading && (
+          <KnotSection />
         )}
       </div>
     </main>
