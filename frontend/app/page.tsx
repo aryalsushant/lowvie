@@ -56,7 +56,7 @@ export default function Home() {
             Lowvie
           </h1>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Upload your business receipts and let AI find cost-saving opportunities and better alternatives
+            Lowvie - Nepali Word For 'Frugal', Helps You Increase your Profit Margin with Just A Few Clicks.
           </p>
         </div>
 

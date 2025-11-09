@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Business Expense Optimizer',
+  title: 'Lowvie - Reducing the Gap Between Revenue & Profit',
   description: 'Optimize your business expenses with AI-powered analysis and negotiation',
 }
 

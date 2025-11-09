@@ -98,8 +98,8 @@ export default function KnotSection() {
   return (
     <div className="mt-12">
       <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-2">Knot Amazon Auth Demo</h2>
-        <p className="text-text-secondary mb-4">Create a Knot session, open the SDK for Amazon (merchant 44), and retrieve mock transactions.</p>
+        <h2 className="text-xl font-semibold mb-2">Connect Your Merchant Account</h2>
+        <p className="text-text-secondary mb-4">Login to Your Merchant Account and Retrieve All Transactions Instantly</p>
         <div className="flex flex-wrap gap-2">
           <button className="btn btn-primary" onClick={createSession} disabled={loading}>Create Session</button>
           <button className="btn" onClick={openKnot} disabled={!sessionId}>Open Knot SDK</button>
