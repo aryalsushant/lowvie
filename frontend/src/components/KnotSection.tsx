@@ -96,20 +96,59 @@ export default function KnotSection({ onTriggerUpload }: Props) {
 
   return (
     <div className="mt-12">
-      <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-2">Connect Your Merchant Account</h2>
-        <p className="text-text-secondary mb-4">Login to Your Merchant Account and Retrieve All Transactions Instantly</p>
-        <div className="flex flex-wrap gap-2">
-          <button className="btn btn-primary" onClick={createSession} disabled={loading}>Create Session</button>
-          <button className="btn" onClick={openKnot} disabled={!sessionId}>Open Knot SDK</button>
-          <button className="btn" onClick={fetchTransactions}>Fetch Transactions</button>
+      <div className="glass-card p-6 md:p-8">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-3">
+          <div className="upload-icon-circle !w-10 !h-10">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M3 12h18M3 17h18" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold leading-tight">Connect Your Merchant Account</h2>
+            <p className="subtle-text">Login to your merchant account and retrieve transactions instantly.</p>
+          </div>
         </div>
-        <div className="mt-4">
-          <label className="text-sm text-text-secondary">External User ID:&nbsp;
-            <input className="px-2 py-1 rounded bg-white/5 border border-white/10" value={externalUserId} onChange={e => setExternalUserId(e.target.value)} />
-          </label>
+
+        {/* Actions */}
+        <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-4">
+          <button
+            className="px-4 py-2 rounded-md btn-primary-gradient disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={createSession}
+            disabled={loading}
+          >
+            Create Session
+          </button>
+          <button
+            className="px-4 py-2 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={openKnot}
+            disabled={!sessionId}
+          >
+            Open Knot SDK
+          </button>
+          <button
+            className="px-4 py-2 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition"
+            onClick={fetchTransactions}
+          >
+            Fetch Transactions
+          </button>
         </div>
-        <pre className="mt-4 p-3 rounded bg-black/80 text-green-400 whitespace-pre-wrap min-h-[150px]">{log}</pre>
+
+        {/* External User ID */}
+        <div className="mt-5">
+          <label className="block text-sm subtle-text mb-1">External User ID</label>
+          <input
+            className="w-full max-w-xs px-3 py-2 rounded-md bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400/40 transition placeholder:text-text-secondary"
+            value={externalUserId}
+            onChange={e => setExternalUserId(e.target.value)}
+            placeholder="demo-user-1"
+          />
+        </div>
+
+        {/* Log */}
+        <div className="mt-6 rounded-lg border border-white/10 bg-black/70">
+          <pre className="p-4 md:p-5 font-mono text-sm text-green-400 whitespace-pre-wrap min-h-[150px]">{log}</pre>
+        </div>
         {/* Transaction list removed since we now reuse receipt workflow */}
       </div>
       <Script src="https://unpkg.com/knotapi-js@next" strategy="afterInteractive" />
