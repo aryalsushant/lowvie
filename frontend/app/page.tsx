@@ -80,7 +80,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-xl font-semibold">Upload Receipt (PDF)</h3>
+                  <h3 className="text-xl font-semibold">Upload Receipts (PDF)</h3>
                   <p className="subtle-text mt-1">Drag and drop your receipt or choose a file to analyze expenses instantly</p>
                 </div>
                 <div className="w-full max-w-lg">
