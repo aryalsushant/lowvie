@@ -58,14 +58,14 @@ export default function Home() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="relative w-14 h-14">
-              <Image src="/logo.png" alt="Lowvie Logo" fill priority className="object-contain drop-shadow-sm" />
+              <Image src="/logo.png" alt="Lobhi Logo" fill priority className="object-contain drop-shadow-sm" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-emerald-400 text-transparent bg-clip-text">
-              Lowvie
+              Lobhi
             </h1>
           </div>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Lowvie - Nepali Word For 'Frugal' - Helps You Increase your Profit Margin with Just A Few Clicks.
+            Lobhi - Nepali Word For 'Frugal' - Helps You Increase your Profit Margin with Just A Few Clicks.
           </p>
         </div>
 
@@ -142,7 +142,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold mb-1">Negotiate & Save</h3>
-              <p className="subtle-text">Generate strategies and let Lowvie negotiate on your behalf.</p>
+              <p className="subtle-text">Generate strategies and let Lobhi negotiate on your behalf.</p>
             </div>
           </div>
         )}

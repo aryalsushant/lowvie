@@ -1,6 +1,6 @@
 <div align="center">
 
-# Lowvie — Profit, Unlocked ⚡️📉
+# Lobhi — Profit, Unlocked ⚡️📉
 
 AI agents that turn messy receipts and vendor logins into savings. Built at HackPrinceton 2025.
 
@@ -17,16 +17,16 @@ If you can unify transactions and receipts, you can automate three workflows tha
 - Benchmark vs. market → know what “fair” looks like.
 - Negotiate with leverage → reduce recurring costs.
 
-## What Lowvie Does
+## What Lobhi Does
 - Upload a receipt or connect a merchant account (Amazon, Walmart, PayPal, …) via Knot TransactionLink.
-- Lowvie parses line items, groups spend, and estimates fair-market pricing using web research.
+- Lobhi parses line items, groups spend, and estimates fair-market pricing using web research.
 - It drafts negotiation emails for current vendors and outreach to cheaper alternatives—ready to send.
 
-Lowvie = “Frugal” in Nepali. The goal is simple: reduce the gap between revenue and profit.
+Lobhi = “Frugal” in Nepali. The goal is simple: reduce the gap between revenue and profit.
 
 ---
 
-## Why Lowvie Makes a Difference
+## Why Lobhi Makes a Difference
 - Direct ROI: every feature maps to measurable savings (price deltas × volumes).
 - Operationally lightweight: no ERP migration; just receipts and merchant logins.
 
