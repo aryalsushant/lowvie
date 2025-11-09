@@ -61,7 +61,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Lowvie - Nepali Word For 'Frugal', Helps You Increase your Profit Margin with Just A Few Clicks.
+            Lowvie - Nepali Word For 'Frugal' - Helps You Increase your Profit Margin with Just A Few Clicks.
           </p>
         </div>
 
@@ -129,7 +129,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold mb-1">Cost Comparison</h3>
-              <p className="subtle-text">Find the best vendors at lower prices, tailored to your needs.</p>
+              <p className="subtle-text">Find alternative vendors at lower prices, tailored to your needs.</p>
             </div>
             <div className="feature-card p-6 text-center">
               <div className="icon-wrap mx-auto mb-4 text-white">
@@ -138,7 +138,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold mb-1">Negotiate & Save</h3>
-              <p className="subtle-text">Generate strategies and let the system help negotiate on your behalf.</p>
+              <p className="subtle-text">Generate strategies and let Lowvie negotiate on your behalf.</p>
             </div>
           </div>
         )}
