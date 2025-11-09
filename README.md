@@ -1,8 +1,8 @@
 <div align="center">
 
-# Lobhi — Profit, Unlocked ⚡️📉
+# Lobhi 
 
-AI agents that turn messy receipts and vendor logins into savings. Built at HackPrinceton 2025.
+Most businesses burn their profits by overpaying. Lobhi tracks your purchases, researches the market, and automatically negotiates or finds better vendors to make sure you're getting the best deal.
 
 </div>
 
