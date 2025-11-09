@@ -1,10 +1,13 @@
 'use client';
 
+import { useId } from 'react';
+
 interface UploadFormProps {
   onFileUpload: (file: File) => Promise<void>;
 }
 
 export default function UploadForm({ onFileUpload }: UploadFormProps) {
+  const inputId = useId();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -16,22 +19,24 @@ export default function UploadForm({ onFileUpload }: UploadFormProps) {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div className="max-w-lg mx-auto w-full">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor={inputId} className="block text-sm font-medium">
             Upload Receipt (PDF)
           </label>
           <input
+            id={inputId}
             type="file"
             accept=".pdf"
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            className="block w-full text-sm rounded-lg border border-white/10 bg-white/5 text-text-secondary focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400/40 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-white file:font-semibold file:bg-gradient-to-r file:from-violet-500 file:to-emerald-500 file:hover:opacity-95"
           />
+          <p className="subtle-text text-xs">PDF only. We’ll analyze line items and surface savings opportunities.</p>
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+          className="w-full btn-primary-gradient py-3 rounded-md"
         >
           Upload and Analyze
         </button>
