@@ -138,7 +138,7 @@ export default function Home() {
 
         {/* Knot Section Below Project Cards */}
         {!parsedData && !isLoading && (
-          <KnotSection />
+          <KnotSection onTriggerUpload={handleFileUpload} />
         )}
       </div>
     </main>

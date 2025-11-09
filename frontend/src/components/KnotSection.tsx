@@ -11,7 +11,12 @@ interface Transaction {
   [key: string]: any;
 }
 
-export default function KnotSection() {
+type Props = {
+  // Instead of analyzing SDK transactions, simply trigger the existing upload workflow
+  onTriggerUpload?: (file: File) => void | Promise<void>;
+};
+
+export default function KnotSection({ onTriggerUpload }: Props) {
   const [sessionId, setSessionId] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -76,22 +81,16 @@ export default function KnotSection() {
   }
 
   async function fetchTransactions() {
+    // Instead of calling transactions API, invoke the existing upload/analysis workflow
+    appendLog('Triggering existing receipt analysis workflow...');
+    // Create a synthetic File object to align with handleFileUpload signature
+    const blob = new Blob([JSON.stringify({ demo: true })], { type: 'application/json' });
+    const syntheticFile = new File([blob], 'synthetic-receipt.json', { type: 'application/json' });
     try {
-      appendLog('Fetching mock transactions...');
-      const resp = await fetch('http://localhost:8000/api/transactions/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ external_user_id: externalUserId, limit: 5 }),
-      });
-      const data = await resp.json();
-      if (Array.isArray(data.transactions)) {
-        setTransactions(data.transactions);
-        appendLog('Transactions loaded: ' + data.transactions.length);
-      } else {
-        appendLog('Unexpected transactions payload: ' + JSON.stringify(data));
-      }
+      await onTriggerUpload?.(syntheticFile);
+      appendLog('Receipt analysis workflow triggered.');
     } catch (e: any) {
-      appendLog('Fetch transactions exception: ' + (e?.message || String(e)));
+      appendLog('Workflow trigger failed: ' + (e?.message || String(e)));
     }
   }
 
@@ -111,16 +110,7 @@ export default function KnotSection() {
           </label>
         </div>
         <pre className="mt-4 p-3 rounded bg-black/80 text-green-400 whitespace-pre-wrap min-h-[150px]">{log}</pre>
-        <h3 className="text-lg font-semibold mt-4">Transactions</h3>
-        {transactions.length === 0 && <p className="text-text-secondary">No transactions yet.</p>}
-        <ul>
-          {transactions.map((t, i) => (
-            <li key={i} className="border-b border-white/10 py-2">
-              <strong>{t.description || t.merchant || 'Purchase'}</strong><br />
-              Amount: {t.amount || t.total || 'N/A'} | Date: {t.date || t.timestamp || 'N/A'}
-            </li>
-          ))}
-        </ul>
+        {/* Transaction list removed since we now reuse receipt workflow */}
       </div>
       <Script src="https://unpkg.com/knotapi-js@next" strategy="afterInteractive" />
     </div>
