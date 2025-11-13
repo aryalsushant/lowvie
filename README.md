@@ -4,6 +4,9 @@
 
 Most businesses burn their profits by overpaying. Lobhi tracks your purchases, researches the market, and automatically negotiates or finds better vendors to make sure you're getting the best deal.
 
+[![Watch the video](https://img.youtube.com/vi/F4bMOxFa8RI/hqdefault.jpg)](https://www.youtube.com/watch?v=F4bMOxFa8RI)
+
+
 </div>
 
 ---
